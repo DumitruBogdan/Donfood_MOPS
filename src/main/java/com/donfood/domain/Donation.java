@@ -2,7 +2,11 @@ package com.donfood.domain;
 
 import com.donfood.domain.enums.Measure;
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -12,6 +16,8 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "donation")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Donation {
 
     @Id

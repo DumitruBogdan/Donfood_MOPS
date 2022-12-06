@@ -12,11 +12,12 @@ import java.util.Set;
 @Entity
 @Data
 @Builder
+@Table(name = "restaurant")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "restaurant")
 public class Restaurant {
     @Id
+
     @Column(name="accountId")
     private Long accountId;
 

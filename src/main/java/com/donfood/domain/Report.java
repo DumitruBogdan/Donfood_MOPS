@@ -1,13 +1,18 @@
 package com.donfood.domain;
 
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "report")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Report {
 
     @Id

@@ -2,7 +2,10 @@ package com.donfood.domain;
 
 import com.donfood.domain.enums.Status;
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -10,6 +13,8 @@ import java.sql.Timestamp;
 @Entity
 @Data
 @Table(name = "order")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
     @Id
     @Column(name = "id")

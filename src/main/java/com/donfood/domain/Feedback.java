@@ -1,7 +1,10 @@
 package com.donfood.domain;
 
 import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,6 +12,8 @@ import java.sql.Timestamp;
 @Entity
 @Data
 @Table(name = "feedback")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Feedback {
     @Id
     @Column(name="orderId")
