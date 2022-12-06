@@ -1,6 +1,6 @@
 package com.donfood.domain;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;

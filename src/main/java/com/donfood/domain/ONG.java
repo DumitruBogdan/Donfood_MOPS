@@ -1,8 +1,8 @@
 package com.donfood.domain;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ public class ONG {
     @OneToOne
     @MapsId
     @JoinColumn(name="accountId")
-    private Account account;
+    private Account accountONG;
 
     @NotNull
     @Column(name="address")

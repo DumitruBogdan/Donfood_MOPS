@@ -1,12 +1,19 @@
 package com.donfood.domain;
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "restaurant")
 public class Restaurant {
     @Id
@@ -17,7 +24,7 @@ public class Restaurant {
     @OneToOne
     @MapsId
     @JoinColumn(name="accountId")
-    private Account account;
+    private Account accountRest;
 
     @NotNull
     @Column(name="fiscalIdCode")

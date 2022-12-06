@@ -1,7 +1,7 @@
 package com.donfood.domain;
 
 import com.donfood.domain.enums.Measure;
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import javax.persistence.*;
 import java.sql.Time;
@@ -58,5 +58,5 @@ public class Donation {
 
     // one to many with order
     @OneToMany(mappedBy = "donation")
-    private Set<Report> orders = new HashSet<>();
+    private Set<Order> orders = new HashSet<>();
 }

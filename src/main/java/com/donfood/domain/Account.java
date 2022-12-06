@@ -1,7 +1,6 @@
 package com.donfood.domain;
 import com.sun.istack.NotNull;
 import lombok.Data;
-import org.hibernate.validator.constraints.Email;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,15 +13,15 @@ public class Account {
     @Column(name="id")
     private Long id;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "accountONG", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private ONG ong;
 
-    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "accountRest", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Restaurant restaurant;
 
-    @Email(message = "Email should be valid")
+    @NotNull
     @Column(name="email")
     private String email;
 
