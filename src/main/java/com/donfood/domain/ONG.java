@@ -1,0 +1,54 @@
+package com.donfood.domain;
+
+import com.sun.istack.NotNull;
+import lombok.Data;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Data
+@Table(name = "ong")
+public class ONG {
+    @Id
+    @Column(name="accountId")
+    private Long accountId;
+
+    @NotNull
+    @OneToOne
+    @MapsId
+    @JoinColumn(name="accountId")
+    private Account account;
+
+    @NotNull
+    @Column(name="address")
+    private String address;
+
+    @Column(name="socialScore")
+    private Double socialScore;
+
+    //many to many with favorite restaurants
+    @ManyToMany(fetch=FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE
+            })
+    @JoinTable(name = "favoriterest",
+            joinColumns = {@JoinColumn (name = "ongId")},
+            inverseJoinColumns = {@JoinColumn (name = "restaurantId")}
+    )
+    private Set<Restaurant> favRestaurants = new HashSet<>();
+
+    public void addRestaurant(Restaurant restaurant){
+        this.favRestaurants.add(restaurant);
+        restaurant.getFavOngs().add(this);
+    }
+
+    // one to many with report
+    @OneToMany(mappedBy = "ong")
+    private Set<Report> reports = new HashSet<>();
+
+    // one to many with order
+    @OneToMany(mappedBy = "ong")
+    private Set<Report> orders = new HashSet<>();
+
+}

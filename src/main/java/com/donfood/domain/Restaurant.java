@@ -1,25 +1,46 @@
 package com.donfood.domain;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "restaurant")
 public class Restaurant {
-
     @Id
+    @Column(name="accountId")
     private Long accountId;
+
+    @NotNull
+    @OneToOne
+    @MapsId
+    @JoinColumn(name="accountId")
+    private Account account;
+
+    @NotNull
+    @Column(name="fiscalIdCode")
     private String fiscalIdCode;
+
+    @NotNull
+    @Column(name="nrPeopleHelping")
     private Integer nrPeopleHelping;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    //many to many with favorite restaurants
+    @ManyToMany(fetch=FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE
+            },
+            mappedBy = "favRestaurants"
+    )
+    private Set<ONG> favOngs = new HashSet<>();
+
+    //one to many with donation
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Donation> donations = new HashSet<>();
+
+    //one to many with report
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Report> reports = new HashSet<>();
 }
