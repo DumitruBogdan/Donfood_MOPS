@@ -1,6 +1,7 @@
 package com.donfood.domain;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Account {
 
     @Id
@@ -32,18 +34,21 @@ public class Account {
 
     @NotNull
     @Column(name="password")
-    private String password;
+    private String passwordEncoded;
 
     @NotNull
     @Column(name="fullName")
     private String fullName;
 
+    @NotNull
     @Column(name="accessRights")
-    private Integer accessRights;
+    private Integer accessRights; // 0=admin, 1=ong, 2=restaurant
 
+    @NotNull
     @Column(name="createdAt")
     private Timestamp createAt;
 
+    @NotNull
     @Column(name="accountVerified")
     private Boolean accountVerified;
 }

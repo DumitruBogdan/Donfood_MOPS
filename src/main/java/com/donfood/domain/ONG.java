@@ -1,6 +1,7 @@
 package com.donfood.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,11 +12,13 @@ import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @Table(name = "ong")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ONG {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="accountId")
     private Long accountId;
 
