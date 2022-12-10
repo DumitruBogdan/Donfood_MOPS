@@ -3,15 +3,14 @@ package com.donfood.domain;
 import com.donfood.domain.enums.Status;
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "order")
 @AllArgsConstructor
 @NoArgsConstructor

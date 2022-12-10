@@ -5,11 +5,14 @@ import com.donfood.domain.Restaurant;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class AccountRequestDTO {
 
@@ -20,10 +23,10 @@ public class AccountRequestDTO {
 
     private Restaurant restaurant;
 
-    @NotNull
+    //@NotNull
     private String email;
 
-    @NotNull
+    //@NotNull
     private String passwordDecoded;
 
     private String fullName;

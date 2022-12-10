@@ -24,18 +24,24 @@ public class AccountService implements  IAccountService{
 
     @Override
     public Account register(AccountRequestDTO accountRequestDTO) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        accountRequestDTO.setPasswordDecoded(bCryptPasswordEncoder.encode(accountRequestDTO.getPasswordDecoded()));
+        if(accountRequestDTO.getEmail() == null || accountRequestDTO.getPasswordDecoded() == null)
+            throw new IllegalArgumentException("Email and password cannot be null");
+        Optional <Account> accountTaken = accountRepository.findByEmail(accountRequestDTO.getEmail()).stream().findFirst();
+        if(!accountTaken.equals(Optional.empty()))
+            throw new IllegalArgumentException("Email is taken.");
+        accountRequestDTO.setPasswordDecoded(accountRequestDTO.getPasswordDecoded());
         accountRequestDTO.setAccountVerified(false);
         accountRequestDTO.setCreateAt(Timestamp.valueOf(LocalDateTime.now()));
         accountRequestDTO.setAccessRights(1);
         Account account = AccountMapper.requestToAccount(accountRequestDTO);
-        //return accountRepository.save(account);
         return account;
     }
 
     @Override
     public Account login(AccountRequestDTO accountRequestDTO) {
+        if(accountRequestDTO.getEmail() == null || accountRequestDTO.getPasswordDecoded() == null)
+            throw new IllegalArgumentException("Email and password cannot be null");
+
         Optional<Account> dbAccount = accountRepository.findByEmail(accountRequestDTO.getEmail()).stream().findFirst();
         if(dbAccount.equals(Optional.empty()))
             throw new ResourceNotFoundException("Email or password incorrect");
@@ -49,15 +55,29 @@ public class AccountService implements  IAccountService{
     }
 
     @Override
-    public Account update(AccountRequestDTO accountRequestDTO) {
-        Optional<Account> dbAccount = accountRepository.findById(accountRequestDTO.getId()).stream().findFirst();
+    public Account update(Long id, AccountRequestDTO accountRequestDTO) {
+        Optional<Account> dbAccount = accountRepository.findById(id).stream().findFirst();
         if(dbAccount.equals(Optional.empty()))
             throw new ResourceNotFoundException("Account was not found by id");
         // email is not editable
 
-        Account account = AccountMapper.requestToAccount(accountRequestDTO);
-        accountRepository.save(account);
-        return account;
+        if(accountRequestDTO.getPasswordDecoded() != null){
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            dbAccount.get().setPasswordEncoded(bCryptPasswordEncoder.encode(accountRequestDTO.getPasswordDecoded()));
+        }
+        if(accountRequestDTO.getFullName() != null)
+            dbAccount.get().setFullName(accountRequestDTO.getFullName());
+
+        if(accountRequestDTO.getAccessRights() != null)
+            dbAccount.get().setAccessRights(accountRequestDTO.getAccessRights());
+
+        if(accountRequestDTO.getCreateAt() != null)
+            dbAccount.get().setCreateAt(accountRequestDTO.getCreateAt());
+
+        if(accountRequestDTO.getAccountVerified() != null)
+            dbAccount.get().setAccountVerified(accountRequestDTO.getAccountVerified());
+
+        return dbAccount.get();
     }
 
     @Override

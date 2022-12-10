@@ -17,7 +17,7 @@ public class ONGMapper {
                 .address(ongRequestDTO.getAddress())
                 .socialScore(ongRequestDTO.getSocialScore())
                 .build();
-        ong.setAccountONG(accountMapper.requestToAccount(ongRequestDTO.getAccountRequestONG()));
+        //ong.setAccountONG(accountMapper.requestToAccount(ongRequestDTO.getAccountRequestONG()));
         return ong;
     }
     public static ONGResponseDTO ONGToResponse(ONG ong){

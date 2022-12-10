@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,23 +28,10 @@ public class ONGService implements IONGService{
 
     @Override
     public ONGResponseDTO register(ONGRequestDTO ongRequestDTO) {
-        /*Account account = accountService.register(ongRequestDTO.getAccountRequestONG());
-        ONG ong;
-        if (account != null) {
-            ongRequestDTO.setAccountId(account.getId());
-            ong = ONGMapper.requestToONG(ongRequestDTO);
-            try{
-                ong.setAccountONG(null);
-                ongRepository.save(ong);
-            }
-            catch(IllegalArgumentException e){
-                accountService.delete(ong.getAccountId());
-            }
-        } else {
-            throw new IllegalArgumentException("Could not register account");
-        }*/
+
         AccountRequestDTO account = ongRequestDTO.getAccountRequestONG();
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        if(account.getPasswordDecoded() == null)
+            throw new IllegalArgumentException("Password cannot be empty");
         account.setAccountVerified(false);
         account.setCreateAt(Timestamp.valueOf(LocalDateTime.now()));
         account.setAccessRights(1);
@@ -58,38 +46,29 @@ public class ONGService implements IONGService{
     }
 
     @Override
-    public ONGResponseDTO login(ONGRequestDTO ongRequestDTO) {
-        Account account = accountService.login(ongRequestDTO.getAccountRequestONG());
-        ONG ong;
-        if (account != null) {
-            ong = ongRepository.getReferenceById(account.getId());
-        } else
-            throw new ResourceNotFoundException("Account not found");
-        ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(ong);
-        return ongResponseDTO;
-    }
+    public ONGResponseDTO update(Long id, ONGRequestDTO ongRequestDTO) {
 
-    @Override
-    public ONGResponseDTO update(ONGRequestDTO ongRequestDTO) {
-        Optional<ONG> dbOng = ongRepository.findById(ongRequestDTO.getAccountId());
+        Optional<ONG> dbOng = ongRepository.findById(id);
+
         if(dbOng.equals(Optional.empty()))
             throw new ResourceNotFoundException("ONG was not found by id");
 
+        if(ongRequestDTO.getAddress() != null)
+            dbOng.get().setAddress(ongRequestDTO.getAddress());
+
+        if(ongRequestDTO.getSocialScore() != null)
+            dbOng.get().setSocialScore(ongRequestDTO.getSocialScore());
+
+        if(ongRequestDTO.getAccountRequestONG() != null)
+            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
+
         ONG ong = ONGMapper.requestToONG(ongRequestDTO);
-
-        Account account = accountService.update(ongRequestDTO.getAccountRequestONG());
-        if (account != null) {
-            try{
-                ongRepository.save(ong);
-            }
-            catch(IllegalArgumentException e){
-                accountService.delete(ong.getAccountId());
-            }
-        } else {
-            throw new IllegalArgumentException("Could not update account");
-        }
-
+        ong.setAccountId(id);
+        if(ongRequestDTO.getAccountRequestONG() != null)
+            ong.setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
+        ongRepository.save(ong);
         ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(ong);
+
         return ongResponseDTO;
     }
 
@@ -99,7 +78,7 @@ public class ONGService implements IONGService{
         if (id == null)
             throw new IllegalArgumentException("The id is null");
         if (!ongRepository.existsById(id))
-            throw new ResourceNotFoundException("The ONG with id: " + id + " was not found");
+            throw new ResourceNotFoundException("The ONG with id " + id + " was not found");
         try{
             accountService.delete(id); //has delete cascade
         }
@@ -116,15 +95,20 @@ public class ONGService implements IONGService{
 
     @Override
     public ONGResponseDTO getById(Long id) {
-        ONG ong = ongRepository.getReferenceById(id);
-        return ONGMapper.ONGToResponse(ong);
+        try{
+            ONG ong = ongRepository.getReferenceById(id);
+            return ONGMapper.ONGToResponse(ong);
+        }
+        catch(EntityNotFoundException e){
+            throw new ResourceNotFoundException("No ONG with that id.");
+        }
     }
 
     @Override
-    public ONGResponseDTO getByFullName(String fullName) {
-        Optional<ONG> ong = ongRepository.findByAccountONGFullName(fullName).stream().findFirst();
-        if(ong.equals(Optional.empty()))
-            throw new ResourceNotFoundException("ONG not found");
-        return ONGMapper.ONGToResponse(ong.get());
+    public List<ONGResponseDTO> getByFullName(String fullName) {
+        List<ONG> ongs = ongRepository.findByAccountONGFullName(fullName);
+        //if(ongs.equals(Optional.empty()))
+        //    throw new ResourceNotFoundException("ONG not found");
+        return ONGMapper.ONGToResponseList(ongs);
     }
 }
