@@ -3,6 +3,7 @@ package com.donfood.domain;
 import com.donfood.domain.enums.Status;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,11 +22,13 @@ public class Order {
 
     @NotNull
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "donationId")
     private Donation donation;
 
     @NotNull
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "ongId")
     private ONG ong;
 

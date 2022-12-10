@@ -3,6 +3,7 @@ package com.donfood.domain;
 import com.donfood.domain.enums.Measure;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,18 +15,25 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "donation")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Donation {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
     @NotNull
+    @Column(name = "restaurantId")
+    private Long restaurantId;
+
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "restaurantId")
+    @JsonIgnore
+    @JoinColumn(name = "restaurantId", insertable = false, updatable = false)
     private Restaurant restaurant;
 
     @NotNull
@@ -63,5 +71,6 @@ public class Donation {
 
     // one to many with order
     @OneToMany(mappedBy = "donation")
+    @JsonIgnore
     private Set<Order> orders = new HashSet<>();
 }
