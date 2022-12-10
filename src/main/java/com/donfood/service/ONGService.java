@@ -62,12 +62,11 @@ public class ONGService implements IONGService{
         if(ongRequestDTO.getAccountRequestONG() != null)
             dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
 
-        ONG ong = ONGMapper.requestToONG(ongRequestDTO);
-        ong.setAccountId(id);
+        dbOng.get().setAccountId(id);
         if(ongRequestDTO.getAccountRequestONG() != null)
-            ong.setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
-        ongRepository.save(ong);
-        ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(ong);
+            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
+        ongRepository.save(dbOng.get());
+        ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(dbOng.get());
 
         return ongResponseDTO;
     }
