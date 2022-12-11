@@ -6,6 +6,7 @@ import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
 import com.donfood.mapper.RestaurantMapper;
+import com.donfood.models.AccountModels;
 import com.donfood.models.RestaurantTestModels;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,9 @@ public class RestaurantServiceImplUnitTest {
     @Mock
     private RestaurantRepository restaurantRepository;
 
+    @Mock
+    private AccountService accountService;
+
     @InjectMocks
     private RestaurantServiceImpl restaurantServiceImpl;
 
@@ -46,6 +50,7 @@ public class RestaurantServiceImplUnitTest {
 
         // given
         when(restaurantRepository.save(any())).thenReturn(RestaurantTestModels.buildRestaurant());
+        when(accountService.register(AccountModels.buildAcountRequestDTO())).thenReturn(AccountModels.buildAcount());
 
         // when
         RestaurantResponseDTO restaurantResponseDTO = restaurantServiceImpl.createRestaurant(RestaurantTestModels.buildRestaurantRequestDTO());
