@@ -33,7 +33,7 @@ public class DonationService implements IDonationService {
         if(donationRequestDTO.getExpirationDate() == null)
             throw new IllegalArgumentException("Provide an expiration date.");
 
-        if(donationRequestDTO.getQuantity() == null)
+        if(donationRequestDTO.getQuantity() == null || donationRequestDTO.getQuantity() <= 0)
             throw new IllegalArgumentException("Provide a quantity.");
 
         if(donationRequestDTO.getQuantityMeasure() == null)
@@ -88,7 +88,10 @@ public class DonationService implements IDonationService {
             donation.setExpirationDate(donationRequestDTO.getExpirationDate());
 
         if(donationRequestDTO.getQuantity() != null)
-            donation.setQuantity(donationRequestDTO.getQuantity());
+            if(donationRequestDTO.getQuantity() <= 0)
+                throw new IllegalArgumentException("Provide a quantity.");
+            else
+                donation.setQuantity(donationRequestDTO.getQuantity());
 
         if(donationRequestDTO.getQuantityMeasure() != null)
             donation.setQuantityMeasure(donationRequestDTO.getQuantityMeasure());

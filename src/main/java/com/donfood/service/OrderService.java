@@ -38,7 +38,7 @@ public class OrderService implements IOrderService{
         if(ongRepository.existsById(orderRequestDTO.getOngId()) == false)
             throw new IllegalArgumentException("ONG provided does not exist.");
 
-        if(orderRequestDTO.getQuantitySelected() == null)
+        if(orderRequestDTO.getQuantitySelected() == null || orderRequestDTO.getQuantitySelected()<=0)
             throw new IllegalArgumentException("Provide a quantity");
 
         Donation donation;
@@ -89,6 +89,9 @@ public class OrderService implements IOrderService{
 
         Order order = orderRepository.getReferenceById(id);
         if(orderRequestDTO.getQuantitySelected() != null){
+            if(orderRequestDTO.getQuantitySelected()<=0)
+                throw new IllegalArgumentException("Provide a quantity");
+
             Donation donation = donationRepository.findById(order.getDonationId()).get();
             if(orderRequestDTO.getQuantitySelected() > donation.getQuantity())
                 throw new IllegalArgumentException("Input quantity is bigger than the available quantity.");
