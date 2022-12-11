@@ -2,6 +2,7 @@ package com.donfood.domain;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "report")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,13 +21,21 @@ public class Report {
     private Long id;
 
     @NotNull
+    @Column(name = "restaurantId")
+    private Long restaurantId;
+
     @ManyToOne
-    @JoinColumn(name = "restaurantId")
+    @JsonIgnore
+    @JoinColumn(name = "restaurantId", insertable = false, updatable = false)
     private Restaurant restaurant;
 
     @NotNull
+    @Column(name = "ongId")
+    private Long ongId;
+
     @ManyToOne
-    @JoinColumn(name = "ongId")
+    @JsonIgnore
+    @JoinColumn(name = "ongId", insertable = false, updatable = false)
     private ONG ong;
 
     @NotNull

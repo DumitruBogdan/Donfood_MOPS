@@ -1,24 +1,18 @@
 package com.donfood.mapper;
 
 import com.donfood.domain.Feedback;
-import com.donfood.dto.FeedbackDTO;
+import com.donfood.dto.FeedbackRequestDTO;
 
 public class FeedbackMapper {
-    public static FeedbackDTO doToDto(Feedback feedback) {
-        return FeedbackDTO.builder()
-                .orderId(feedback.getOrderId())
-                .comment(feedback.getComment())
-                .rating(feedback.getRating())
-                .createdAt(feedback.getCreatedAt())
-                .build();
-    }
 
-    public static Feedback dtoToDo(FeedbackDTO feedbackDto) {
-        return Feedback.builder()
-                .orderId(feedbackDto.getOrderId())
-                .comment(feedbackDto.getComment())
-                .rating(feedbackDto.getRating())
-                .createdAt(feedbackDto.getCreatedAt())
+    public static Feedback requestToFeedback (FeedbackRequestDTO feedbackRequestDTO ){
+        Feedback feedback = Feedback.builder()
+                .orderId(feedbackRequestDTO.getOrderId())
+                .order(feedbackRequestDTO.getOrder())
+                .comment(feedbackRequestDTO.getComment())
+                .rating(feedbackRequestDTO.getRating())
+                .createdAt(feedbackRequestDTO.getCreatedAt())
                 .build();
+        return feedback;
     }
 }
