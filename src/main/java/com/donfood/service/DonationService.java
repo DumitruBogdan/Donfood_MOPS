@@ -111,7 +111,7 @@ public class DonationService implements IDonationService {
         if (id == null)
             throw new IllegalArgumentException("The id is null");
         if (!donationRepository.existsById(id))
-            throw new ResourceNotFoundException("The ONG with id " + id + " was not found");
+            throw new ResourceNotFoundException("The donation with id " + id + " was not found");
         try{
             donationRepository.deleteById(id); //has delete cascade
         }
