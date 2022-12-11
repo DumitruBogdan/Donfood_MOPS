@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public interface IAccountService {
     Account register(AccountRequestDTO accountRequestDTO);
     Account login(AccountRequestDTO accountRequestDTO);
-    Account update(AccountRequestDTO accountRequestDTO);
+    Account update(Long id, AccountRequestDTO accountRequestDTO);
     void delete(Long id);
     Account getById(Long id);
     Account getByFullName(String fullName);

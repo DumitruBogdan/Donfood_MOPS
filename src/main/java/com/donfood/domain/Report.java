@@ -2,14 +2,13 @@ package com.donfood.domain;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "report")
 @AllArgsConstructor
 @NoArgsConstructor

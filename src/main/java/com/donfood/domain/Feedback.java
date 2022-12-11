@@ -4,14 +4,16 @@ import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+
 import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @Table(name = "feedback")
 @AllArgsConstructor

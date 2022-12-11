@@ -1,15 +1,13 @@
 package com.donfood.domain;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,14 +17,6 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private Long id;
-
-    @OneToOne(mappedBy = "accountONG", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private ONG ong;
-
-    @OneToOne(mappedBy = "accountRest", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Restaurant restaurant;
 
     @NotNull
     @Column(name="email")
