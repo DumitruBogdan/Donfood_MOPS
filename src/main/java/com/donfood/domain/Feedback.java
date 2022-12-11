@@ -3,6 +3,7 @@ package com.donfood.domain;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
+@Builder
 @Table(name = "feedback")
 @AllArgsConstructor
 @NoArgsConstructor
