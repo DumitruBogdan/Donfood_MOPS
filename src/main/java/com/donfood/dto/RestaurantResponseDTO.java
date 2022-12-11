@@ -16,8 +16,7 @@ public class RestaurantResponseDTO {
     private AccountResponseDTO accountResponseDTO;
     private String fiscalIdCode;
     private Integer nrPeopleHelping;
-//    private Set<ONG> favOngs;
-//    private Set<Donation> donations;
-//    private Set<Report> reports;
-
+    private Set<ONG> favOngs;
+    private Set<Donation> donations;
+    private Set<Report> reports;
 }

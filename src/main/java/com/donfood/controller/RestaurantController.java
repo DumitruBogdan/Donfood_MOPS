@@ -1,7 +1,5 @@
 package com.donfood.controller;
 
-import com.donfood.dto.ONGRequestDTO;
-import com.donfood.dto.ONGResponseDTO;
 import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.service.RestaurantService;

@@ -1,20 +1,16 @@
 package com.donfood.service;
 
-import com.donfood.dao.IAccountRepository;
 import com.donfood.dao.RestaurantRepository;
-import com.donfood.domain.ONG;
 import com.donfood.domain.Restaurant;
 import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
-import com.donfood.mapper.ONGMapper;
 import com.donfood.mapper.RestaurantMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,19 +29,14 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurantRepository.existsById(restaurantRequestDTO.getAccountId())) {
             throw new EntityExistsException("Restaurant already exists");
         }
-
-        accountService.register(restaurantRequestDTO.getAccountRequestDTO());
-
-        Restaurant restaurant = RestaurantMapper.requestDtoToDo(restaurantRequestDTO);
-        restaurant.setAccountRest(accountService.register(restaurantRequestDTO.getAccountRequestDTO()));
-        restaurantRepository.save(restaurant);
+        Restaurant sdas = RestaurantMapper.requestDtoToDo(restaurantRequestDTO);
+        Restaurant restaurant = restaurantRepository.save(sdas);
         return RestaurantMapper.doToResponseDto(restaurant);
     }
 
     @Override
     public RestaurantResponseDTO getRestaurantById(Long id) {
 
-        checkIdIsNull(id);
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (!restaurant.isPresent()) {
             throw new ResourceNotFoundException("The restaurant with id: " + id + " was not found");

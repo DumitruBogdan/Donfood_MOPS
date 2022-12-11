@@ -1,10 +1,6 @@
 package com.donfood.dto;
 
-import com.donfood.domain.ONG;
-import com.donfood.domain.Restaurant;
-import com.sun.istack.NotNull;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +14,6 @@ public class AccountRequestDTO {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private ONG ong;
-
-    private Restaurant restaurant;
 
     //@NotNull
     private String email;
