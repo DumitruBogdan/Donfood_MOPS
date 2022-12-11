@@ -11,10 +11,9 @@ import java.util.List;
 @Service
 public interface IONGService {
     ONGResponseDTO register(ONGRequestDTO ongRequestDTO);
-    ONGResponseDTO login(ONGRequestDTO ongRequestDTO);
-    ONGResponseDTO update(ONGRequestDTO ongRequestDTO);
+    ONGResponseDTO update(Long id, ONGRequestDTO ongRequestDTO);
     void delete(Long id);
     List<ONGResponseDTO> getAll();
     ONGResponseDTO getById(Long id);
-    ONGResponseDTO getByFullName(String fullName);
+    List<ONGResponseDTO> getByFullName(String fullName);
 }

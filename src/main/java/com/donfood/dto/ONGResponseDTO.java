@@ -5,12 +5,15 @@ import com.donfood.domain.Report;
 import com.donfood.domain.Restaurant;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
-@Data
+@Getter
+@Setter
 @Builder
 public class ONGResponseDTO {
 

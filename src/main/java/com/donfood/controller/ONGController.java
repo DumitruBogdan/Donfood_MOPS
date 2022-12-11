@@ -25,9 +25,12 @@ public class ONGController {
         return ongService.getById(id);
     }
 
+    @GetMapping("/filter/{fullName}")
+    public List<ONGResponseDTO> getByFullName(@PathVariable String fullName){return ongService.getByFullName(fullName);}
+
     @PutMapping("/{id}")
     public ONGResponseDTO updateONG(@PathVariable Long id, @RequestBody ONGRequestDTO ongRequestDTO){
-        return ongService.update(ongRequestDTO);
+        return ongService.update(id, ongRequestDTO);
     }
 
     @DeleteMapping("/{id}")

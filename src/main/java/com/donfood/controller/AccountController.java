@@ -1,5 +1,7 @@
 package com.donfood.controller;
 
+import com.donfood.domain.Account;
+import com.donfood.dto.AccountRequestDTO;
 import com.donfood.dto.ONGRequestDTO;
 import com.donfood.dto.ONGResponseDTO;
 import com.donfood.service.AccountService;
@@ -15,13 +17,14 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/register")
+    @PostMapping("/registerONG")
     public ONGResponseDTO registerONG(@RequestBody ONGRequestDTO ongRequestDTO){
         return ongService.register(ongRequestDTO);
     }
     @PostMapping("/login")
-    public ONGResponseDTO loginONG(@RequestBody ONGRequestDTO ongRequestDTO){
-        return ongService.login(ongRequestDTO);
+    public Account login(@RequestBody AccountRequestDTO accountRequestDTO){
+        Account value = accountService.login(accountRequestDTO);
+        return value;
     }
 
     @DeleteMapping("/{id}")

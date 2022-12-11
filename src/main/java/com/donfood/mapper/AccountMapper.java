@@ -8,8 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class AccountMapper {
     public static Account requestToAccount (AccountRequestDTO accountRequestDTO){
         Account account = Account.builder()
-                .ong(accountRequestDTO.getOng())
-                .restaurant(accountRequestDTO.getRestaurant())
                 .email(accountRequestDTO.getEmail())
                 .passwordEncoded(accountRequestDTO.getPasswordDecoded()) //to avoid an error
                 .fullName(accountRequestDTO.getFullName())
@@ -23,19 +21,6 @@ public class AccountMapper {
         account.setPasswordEncoded(bCryptPasswordEncoder.encode(accountRequestDTO.getPasswordDecoded()));
         return account;
     }
-    /*public AccountResponseDTO accountToResponse(Account account){
-        return AccountResponseDTO.builder()
-                .id(account.getId())
-                .ong(account.getOng())
-                .restaurant(account.getRestaurant())
-                .email(account.getEmail())
-                .passwordEncoded(account.getPasswordEncoded())
-                .fullName(account.getFullName())
-                .accessRights(account.getAccessRights())
-                .createAt(account.getCreateAt())
-                .accountVerified(account.getAccountVerified())
-                .build();
-    }*/
 
     public ONG requestToONG(AccountRequestDTO accountRequestDTO){
         ONG ong = ONG.builder()
@@ -44,7 +29,4 @@ public class AccountMapper {
         ong.setAccountONG(this.requestToAccount(accountRequestDTO));
         return ong;
     }
-    /*public AccountResponseDTO ongToResponse(ONG ong){
-        return this.accountToResponse(ong.getAccountONG());
-    }*/
 }
