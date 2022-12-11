@@ -62,7 +62,6 @@ public class ONGService implements IONGService{
         if(ongRequestDTO.getAccountRequestONG() != null)
             dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
 
-        dbOng.get().setAccountId(id);
         if(ongRequestDTO.getAccountRequestONG() != null)
             dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
         ongRepository.save(dbOng.get());
