@@ -16,12 +16,12 @@ public class ONGController {
     private ONGService ongService;
 
     @GetMapping
-    public List<ONGResponseDTO> getAll(){
+    public List<ONGResponseDTO> getAll() {
         return ongService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ONGResponseDTO getById(@PathVariable Long id){
+    public ONGResponseDTO getById(@PathVariable Long id) {
         return ongService.getById(id);
     }
 
@@ -29,12 +29,12 @@ public class ONGController {
     public List<ONGResponseDTO> getByFullName(@PathVariable String fullName){return ongService.getByFullName(fullName);}
 
     @PutMapping("/{id}")
-    public ONGResponseDTO updateONG(@PathVariable Long id, @RequestBody ONGRequestDTO ongRequestDTO){
+    public ONGResponseDTO updateONG(@PathVariable Long id, @RequestBody ONGRequestDTO ongRequestDTO) {
         return ongService.update(id, ongRequestDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteONG(@PathVariable Long id){
+    public void deleteONG(@PathVariable Long id) {
         ongService.delete(id);
     }
 }
