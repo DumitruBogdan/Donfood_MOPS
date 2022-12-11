@@ -29,9 +29,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurantRepository.existsById(restaurantRequestDTO.getAccountId())) {
             throw new EntityExistsException("Restaurant already exists");
         }
-        Restaurant sdas = RestaurantMapper.requestDtoToDo(restaurantRequestDTO);
-        Restaurant restaurant = restaurantRepository.save(sdas);
-        return RestaurantMapper.doToResponseDto(restaurant);
+        Restaurant callRestaurant = RestaurantMapper.requestDtoToDo(restaurantRequestDTO);
+        callRestaurant.setAccountRest(accountService.register(restaurantRequestDTO.getAccountRequestDTO()));
+        return RestaurantMapper.doToResponseDto(restaurantRepository.save(callRestaurant));
     }
 
     @Override
