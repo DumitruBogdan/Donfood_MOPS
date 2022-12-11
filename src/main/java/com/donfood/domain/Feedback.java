@@ -2,6 +2,7 @@ package com.donfood.domain;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -23,10 +24,9 @@ public class Feedback {
     @Column(name="orderId")
     private Long orderId;
 
-    @NotNull
     @OneToOne
-    @MapsId
-    @JoinColumn(name="orderId")
+    @JsonIgnore
+    @JoinColumn(name="orderId",insertable = false, updatable = false)
     private Order order;
 
     @NotNull
