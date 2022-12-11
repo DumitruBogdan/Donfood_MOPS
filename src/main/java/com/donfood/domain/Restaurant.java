@@ -2,7 +2,6 @@ package com.donfood.domain;
 import javax.validation.constraints.NotNull;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,14 +15,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class Restaurant {
     @Id
-
     @Column(name="accountId")
     private Long accountId;
 
     @NotNull
     @OneToOne
     @MapsId
-    @JoinColumn(name="accountId")
+    @JoinColumn(name="accountId", insertable = false, updatable = false)
     private Account accountRest;
 
     @NotNull

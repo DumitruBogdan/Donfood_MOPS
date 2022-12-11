@@ -1,19 +1,20 @@
 package com.donfood.service;
 
-import com.donfood.dto.RestaurantDTO;
+import com.donfood.dto.RestaurantRequestDTO;
+import com.donfood.dto.RestaurantResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface RestaurantService { 
-    RestaurantDTO createRestaurant(RestaurantDTO restaurantDTO);
-    
-    RestaurantDTO getRestaurantById(Long id);
-    
-    List<RestaurantDTO> getAllRestaurants();
+    RestaurantResponseDTO createRestaurant(RestaurantRequestDTO restaurantRequestDTO);
 
-    RestaurantDTO updateRestaurant( RestaurantDTO restaurantDTO);
+    RestaurantResponseDTO getRestaurantById(Long id);
+    
+    List<RestaurantResponseDTO> getAllRestaurants();
+
+    RestaurantResponseDTO updateRestaurant(RestaurantRequestDTO restaurantRequestDTO);
 
     void deleteRestaurant(Long id);
 }

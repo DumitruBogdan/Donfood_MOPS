@@ -2,7 +2,8 @@ package com.donfood.service;
 
 import com.donfood.dao.RestaurantRepository;
 import com.donfood.domain.Restaurant;
-import com.donfood.dto.RestaurantDTO;
+import com.donfood.dto.RestaurantRequestDTO;
+import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
 import com.donfood.mapper.RestaurantMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +20,33 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private IAccountService accountService;
+
     @Override
-    public RestaurantDTO createRestaurant(RestaurantDTO restaurantDTO) {
-        if (restaurantRepository.existsById(restaurantDTO.getAccountId())) {
+    public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO restaurantRequestDTO) {
+
+        if (restaurantRepository.existsById(restaurantRequestDTO.getAccountId())) {
             throw new EntityExistsException("Restaurant already exists");
         }
-        return RestaurantMapper.doToDto(restaurantRepository.save(RestaurantMapper.dtoToDo(restaurantDTO)));
+        Restaurant callRestaurant = RestaurantMapper.requestDtoToDo(restaurantRequestDTO);
+        callRestaurant.setAccountRest(accountService.register(restaurantRequestDTO.getAccountRequestDTO()));
+        return RestaurantMapper.doToResponseDto(restaurantRepository.save(callRestaurant));
     }
 
     @Override
-    public RestaurantDTO getRestaurantById(Long id) {
-        checkIdIsNull(id);
+    public RestaurantResponseDTO getRestaurantById(Long id) {
+
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (!restaurant.isPresent()) {
             throw new ResourceNotFoundException("The restaurant with id: " + id + " was not found");
         }
-        return RestaurantMapper.doToDto(restaurant.get());
+        return RestaurantMapper.doToResponseDto(restaurant.get());
     }
 
     @Override
-    public List<RestaurantDTO> getAllRestaurants() {
+    public List<RestaurantResponseDTO> getAllRestaurants() {
+
         List<Restaurant> restaurants = restaurantRepository.findAll();
         if (restaurants.isEmpty()) {
             throw new ResourceNotFoundException("There are not restaurants in the database");
@@ -47,12 +55,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantDTO updateRestaurant(RestaurantDTO restaurantDTO) {
-        Optional<Restaurant> databaseRestaurant = restaurantRepository.findById(restaurantDTO.getAccountId());
+    public RestaurantResponseDTO updateRestaurant(RestaurantRequestDTO restaurantRequestDTO) {
+
+        Optional<Restaurant> databaseRestaurant = restaurantRepository.findById(restaurantRequestDTO.getAccountId());
         if (!databaseRestaurant.isPresent()) {
-            throw new ResourceNotFoundException("The restaurant with id: " + restaurantDTO.getAccountId() + " was not found");
+            throw new ResourceNotFoundException("The restaurant with id: " + restaurantRequestDTO.getAccountId() + " was not found");
         }
-        return RestaurantMapper.doToDto(restaurantRepository.save(validateRestaurant(databaseRestaurant.get(), restaurantDTO)));
+        return RestaurantMapper.doToResponseDto(restaurantRepository.save(validateRestaurant(databaseRestaurant.get(), restaurantRequestDTO)));
     }
 
     @Override
@@ -65,20 +74,22 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantRepository.deleteById(id);
     }
 
-    public Restaurant validateRestaurant(Restaurant restaurant, RestaurantDTO restaurantDTO) {
-        if (restaurantDTO.getAccountId() != null) {
-            restaurant.setAccountId(restaurantDTO.getAccountId());
+    private Restaurant validateRestaurant(Restaurant restaurant, RestaurantRequestDTO restaurantRequestDTO) {
+
+        if (restaurantRequestDTO.getAccountId() != null) {
+            restaurant.setAccountId(restaurantRequestDTO.getAccountId());
         }
-        if (StringUtils.hasText(restaurantDTO.getFiscalIdCode())) {
-            restaurant.setFiscalIdCode(restaurantDTO.getFiscalIdCode());
+        if (StringUtils.hasText(restaurantRequestDTO.getFiscalIdCode())) {
+            restaurant.setFiscalIdCode(restaurantRequestDTO.getFiscalIdCode());
         }
-        if (restaurantDTO.getNrPeopleHelping() != null) {
-            restaurant.setNrPeopleHelping(restaurantDTO.getNrPeopleHelping());
+        if (restaurantRequestDTO.getNrPeopleHelping() != null) {
+            restaurant.setNrPeopleHelping(restaurantRequestDTO.getNrPeopleHelping());
         }
         return restaurant;
     }
 
     public void checkIdIsNull(Long id) {
+
         if (id == null) {
             throw new IllegalArgumentException("The id is not valid");
         }

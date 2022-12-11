@@ -4,22 +4,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Getter
-@Setter
 @Builder
-public class AccountRequestDTO {
+@Setter
+@Getter
+public class AccountResponseDTO {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //@NotNull
     private String email;
-
-    //@NotNull
-    private String passwordDecoded;
 
     private String fullName;
 

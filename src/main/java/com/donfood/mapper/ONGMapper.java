@@ -1,10 +1,8 @@
 package com.donfood.mapper;
 
 import com.donfood.domain.ONG;
-import com.donfood.domain.Restaurant;
 import com.donfood.dto.ONGRequestDTO;
 import com.donfood.dto.ONGResponseDTO;
-import com.donfood.dto.RestaurantDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
