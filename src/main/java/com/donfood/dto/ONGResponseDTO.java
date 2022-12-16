@@ -1,14 +1,13 @@
 package com.donfood.dto;
 
 import com.donfood.domain.Account;
+import com.donfood.domain.Order;
 import com.donfood.domain.Report;
 import com.donfood.domain.Restaurant;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,5 +30,5 @@ public class ONGResponseDTO {
 
     private Set<Report> reports = new HashSet<>();
 
-    private Set<Report> orders = new HashSet<>();
+    private Set<Order> orders = new HashSet<>();
 }
