@@ -32,8 +32,7 @@ public class AccountService implements IAccountService {
         accountRequestDTO.setAccountVerified(false);
         accountRequestDTO.setCreateAt(Timestamp.valueOf(LocalDateTime.now()));
         accountRequestDTO.setAccessRights(1);
-        Account account = AccountMapper.requestToAccount(accountRequestDTO);
-        return account;
+        return accountRepository.save(AccountMapper.requestToAccount(accountRequestDTO));
     }
 
     @Override

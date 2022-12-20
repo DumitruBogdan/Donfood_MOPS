@@ -13,11 +13,10 @@ import java.util.Set;
 @Setter
 @Builder
 public class ONGRequestDTO {
-    //@NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long accountId;
 
-    private AccountRequestDTO accountRequestONG;
+    private AccountRequestDTO accountRequestDTO;
 
     private String address;
 

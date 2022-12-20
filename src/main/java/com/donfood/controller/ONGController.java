@@ -15,6 +15,11 @@ public class ONGController {
     @Autowired
     private ONGService ongService;
 
+    @PostMapping("/register")
+    public ONGResponseDTO registerONG(@RequestBody ONGRequestDTO ongRequestDTO){
+        return ongService.register(ongRequestDTO);
+    }
+
     @GetMapping
     public List<ONGResponseDTO> getAll() {
         return ongService.getAll();

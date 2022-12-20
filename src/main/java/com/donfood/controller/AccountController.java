@@ -12,15 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class AccountController {
-    @Autowired
-    private ONGService ongService;
+
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/registerONG")
-    public ONGResponseDTO registerONG(@RequestBody ONGRequestDTO ongRequestDTO){
-        return ongService.register(ongRequestDTO);
-    }
     @PostMapping("/login")
     public Account login(@RequestBody AccountRequestDTO accountRequestDTO){
         Account value = accountService.login(accountRequestDTO);

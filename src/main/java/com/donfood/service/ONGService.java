@@ -1,20 +1,17 @@
 package com.donfood.service;
 
 import com.donfood.dao.IONGRepository;
-import com.donfood.domain.Account;
 import com.donfood.domain.ONG;
-import com.donfood.dto.AccountRequestDTO;
 import com.donfood.dto.ONGRequestDTO;
 import com.donfood.dto.ONGResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
 import com.donfood.mapper.ONGMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,22 +24,16 @@ public class ONGService implements IONGService{
     private IONGRepository ongRepository;
 
     @Override
+    @Transactional
     public ONGResponseDTO register(ONGRequestDTO ongRequestDTO) {
 
-        AccountRequestDTO account = ongRequestDTO.getAccountRequestONG();
-        if(account.getPasswordDecoded() == null)
-            throw new IllegalArgumentException("Password cannot be empty");
-        account.setAccountVerified(false);
-        account.setCreateAt(Timestamp.valueOf(LocalDateTime.now()));
-        account.setAccessRights(1);
+        if (ongRepository.existsById(ongRequestDTO.getAccountId())) {
+            throw new EntityExistsException("ONG already exists");
+        }
 
-        ongRequestDTO.setAccountRequestONG(account);
         ONG ong = ONGMapper.requestToONG(ongRequestDTO);
-        ong.setAccountONG(accountService.register(ongRequestDTO.getAccountRequestONG()));
-        ongRepository.save(ong);
-
-        ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(ong);
-        return ongResponseDTO;
+        ong.setAccountONG(accountService.register(ongRequestDTO.getAccountRequestDTO()));
+        return ONGMapper.ONGToResponse(ongRepository.save(ong));
     }
 
     @Override
@@ -59,11 +50,11 @@ public class ONGService implements IONGService{
         if(ongRequestDTO.getSocialScore() != null)
             dbOng.get().setSocialScore(ongRequestDTO.getSocialScore());
 
-        if(ongRequestDTO.getAccountRequestONG() != null)
-            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
+        if(ongRequestDTO.getAccountRequestDTO() != null)
+            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestDTO()));
 
-        if(ongRequestDTO.getAccountRequestONG() != null)
-            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestONG()));
+        if(ongRequestDTO.getAccountRequestDTO() != null)
+            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestDTO()));
         ongRepository.save(dbOng.get());
         ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(dbOng.get());
 
@@ -71,6 +62,7 @@ public class ONGService implements IONGService{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
 
         if (id == null)
@@ -78,7 +70,7 @@ public class ONGService implements IONGService{
         if (!ongRepository.existsById(id))
             throw new ResourceNotFoundException("The ONG with id " + id + " was not found");
         try{
-            accountService.delete(id); //has delete cascade
+            ongRepository.deleteById(id); //has delete cascade
         }
         catch(IllegalArgumentException e){
             throw new IllegalArgumentException("Error while deleting resource");

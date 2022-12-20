@@ -16,12 +16,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class ONG {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="accountId")
     private Long accountId;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @MapsId
     @JoinColumn(name="accountId")
     private Account accountONG;
@@ -55,6 +54,6 @@ public class ONG {
 
     // one to many with order
     @OneToMany(mappedBy = "ong")
-    private Set<Report> orders = new HashSet<>();
+    private Set<Order> orders = new HashSet<>();
 
 }

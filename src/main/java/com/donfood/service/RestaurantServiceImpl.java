@@ -2,6 +2,7 @@ package com.donfood.service;
 
 import com.donfood.dao.RestaurantRepository;
 import com.donfood.domain.Restaurant;
+import com.donfood.dto.AccountRequestDTO;
 import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
+import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +28,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     private IAccountService accountService;
 
     @Override
+    @Transactional
     public RestaurantResponseDTO createRestaurant(RestaurantRequestDTO restaurantRequestDTO) {
 
         if (restaurantRepository.existsById(restaurantRequestDTO.getAccountId())) {
             throw new EntityExistsException("Restaurant already exists");
         }
+
         Restaurant callRestaurant = RestaurantMapper.requestDtoToDo(restaurantRequestDTO);
         callRestaurant.setAccountRest(accountService.register(restaurantRequestDTO.getAccountRequestDTO()));
         return RestaurantMapper.doToResponseDto(restaurantRepository.save(callRestaurant));
@@ -65,6 +71,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Transactional
     public void deleteRestaurant(Long id) {
 
         checkIdIsNull(id);

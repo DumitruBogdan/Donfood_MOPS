@@ -19,7 +19,7 @@ public class Restaurant {
     private Long accountId;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name="accountId", insertable = false, updatable = false)
     private Account accountRest;

@@ -12,7 +12,6 @@ public class RestaurantMapper {
     public static Restaurant requestDtoToDo(RestaurantRequestDTO restaurantRequestDTO) {
         return Restaurant.builder()
                 .accountId(restaurantRequestDTO.getAccountId())
-                .accountRest(AccountMapper.requestToAccount(restaurantRequestDTO.getAccountRequestDTO()))
                 .fiscalIdCode(restaurantRequestDTO.getFiscalIdCode())
                 .nrPeopleHelping(restaurantRequestDTO.getNrPeopleHelping())
                 .build();

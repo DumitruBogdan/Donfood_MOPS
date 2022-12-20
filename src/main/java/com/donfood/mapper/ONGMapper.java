@@ -10,14 +10,13 @@ import java.util.stream.Collectors;
 public class ONGMapper {
     private static AccountMapper accountMapper;
     public static ONG requestToONG(ONGRequestDTO ongRequestDTO){
-        ONG ong = ONG.builder()
+        return ONG.builder()
                 .accountId(ongRequestDTO.getAccountId())
                 .address(ongRequestDTO.getAddress())
                 .socialScore(ongRequestDTO.getSocialScore())
                 .build();
-        //ong.setAccountONG(accountMapper.requestToAccount(ongRequestDTO.getAccountRequestONG()));
-        return ong;
     }
+
     public static ONGResponseDTO ONGToResponse(ONG ong){
         return ONGResponseDTO.builder()
                 .accountId(ong.getAccountId())
@@ -29,11 +28,13 @@ public class ONGMapper {
                 .orders(ong.getOrders())
                 .build();
     }
+
     public List<ONG> requestToONGList(List<ONGRequestDTO> ongRequestDTOS) {
         return ongRequestDTOS.stream()
                 .map(ONGMapper::requestToONG)
                 .collect(Collectors.toList());
     }
+
     public static List<ONGResponseDTO> ONGToResponseList(List<ONG> ong) {
         return ong.stream()
                 .map(ONGMapper::ONGToResponse)
