@@ -20,9 +20,9 @@ public class ONG {
     private Long accountId;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @MapsId
-    @JoinColumn(name="accountId", insertable = false, updatable = false)
+    @JoinColumn(name="accountId")
     private Account accountONG;
 
     @NotNull

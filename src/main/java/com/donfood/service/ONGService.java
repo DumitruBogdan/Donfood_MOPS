@@ -62,6 +62,7 @@ public class ONGService implements IONGService{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
 
         if (id == null)
@@ -69,7 +70,7 @@ public class ONGService implements IONGService{
         if (!ongRepository.existsById(id))
             throw new ResourceNotFoundException("The ONG with id " + id + " was not found");
         try{
-            accountService.delete(id); //has delete cascade
+            ongRepository.deleteById(id); //has delete cascade
         }
         catch(IllegalArgumentException e){
             throw new IllegalArgumentException("Error while deleting resource");
