@@ -3,7 +3,6 @@ package com.donfood.controller;
 import com.donfood.exception.ResourceNotFoundException;
 import com.donfood.models.RestaurantTestModels;
 import com.donfood.service.RestaurantServiceImpl;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -61,12 +60,11 @@ class RestaurantControllerFunctionalTest {
     }
 
     @Test
-    @Disabled
     @WithMockUser(username="admin",roles="ADMIN")
     void testCreateRestaurantException() throws Exception {
 
         // Given
-        when(restaurantService.createRestaurant(RestaurantTestModels.buildRestaurantRequestDTO())).thenThrow(new EntityExistsException("Deal already exists"));
+        when(restaurantService.createRestaurant(any())).thenThrow(new EntityExistsException("Restaurant already exists"));
 
         // When
         this.mockMvc.perform(post("/api/restaurant/register")
@@ -130,12 +128,11 @@ class RestaurantControllerFunctionalTest {
     }
 
     @Test
-    @Disabled
     @WithMockUser(username="admin",roles="ADMIN")
     void testUpdateRestaurant() throws Exception {
 
         // Given
-        given(restaurantService.updateRestaurant(RestaurantTestModels.buildRestaurantRequestDTO())).willReturn(RestaurantTestModels.buildRestaurantResponseDTO());
+        given(restaurantService.updateRestaurant(any())).willReturn(RestaurantTestModels.buildRestaurantResponseDTO());
 
         // When
         this.mockMvc.perform(put("/api/restaurant/" + RESTAURANT_ID)

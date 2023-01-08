@@ -1,7 +1,6 @@
 package com.donfood.service;
 
 import com.donfood.dao.RestaurantRepository;
-import com.donfood.domain.Restaurant;
 import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
@@ -10,12 +9,10 @@ import com.donfood.models.AccountModels;
 import com.donfood.models.RestaurantTestModels;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import javax.persistence.EntityExistsException;
-import javax.swing.text.html.Option;
 
 import java.util.ArrayList;
 import java.util.Collections;

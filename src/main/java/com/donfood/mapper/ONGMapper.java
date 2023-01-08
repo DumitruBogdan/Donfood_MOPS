@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ONGMapper {
-    private static AccountMapper accountMapper;
+
     public static ONG requestToONG(ONGRequestDTO ongRequestDTO){
         return ONG.builder()
                 .accountId(ongRequestDTO.getAccountId())
+                .accountONG(AccountMapper.requestToAccount(ongRequestDTO.getAccountRequestDTO()))
                 .address(ongRequestDTO.getAddress())
                 .socialScore(ongRequestDTO.getSocialScore())
                 .build();
@@ -20,7 +21,7 @@ public class ONGMapper {
     public static ONGResponseDTO ONGToResponse(ONG ong){
         return ONGResponseDTO.builder()
                 .accountId(ong.getAccountId())
-                .accountONG(ong.getAccountONG())
+                .accountONG(AccountMapper.accountToResponse(ong.getAccountONG()))
                 .address(ong.getAddress())
                 .socialScore(ong.getSocialScore())
                 .favRestaurants(ong.getFavRestaurants())
