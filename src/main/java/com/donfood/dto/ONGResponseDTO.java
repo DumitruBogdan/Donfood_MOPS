@@ -1,6 +1,5 @@
 package com.donfood.dto;
 
-import com.donfood.domain.Account;
 import com.donfood.domain.Order;
 import com.donfood.domain.Report;
 import com.donfood.domain.Restaurant;
@@ -11,6 +10,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -19,7 +19,7 @@ public class ONGResponseDTO {
     @NotNull
     private Long accountId;
 
-    private Account accountONG;
+    private AccountResponseDTO accountONG;
 
     @NotNull
     private String address;

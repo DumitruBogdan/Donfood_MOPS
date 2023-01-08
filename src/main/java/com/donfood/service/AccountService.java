@@ -2,15 +2,12 @@ package com.donfood.service;
 
 import com.donfood.dao.IAccountRepository;
 import com.donfood.domain.Account;
-import com.donfood.domain.Restaurant;
 import com.donfood.dto.AccountRequestDTO;
-import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.exception.ResourceNotFoundException;
 import com.donfood.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -54,7 +51,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account update(Long id, AccountRequestDTO accountRequestDTO) {
-        Optional<Account> dbAccount = accountRepository.findById(id).stream().findFirst();
+        Optional<Account> dbAccount = accountRepository.findById(id);
         if (dbAccount.equals(Optional.empty()))
             throw new ResourceNotFoundException("Account was not found by id");
         // email is not editable

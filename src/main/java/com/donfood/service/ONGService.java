@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -53,12 +52,7 @@ public class ONGService implements IONGService{
         if(ongRequestDTO.getAccountRequestDTO() != null)
             dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestDTO()));
 
-        if(ongRequestDTO.getAccountRequestDTO() != null)
-            dbOng.get().setAccountONG(accountService.update(id, ongRequestDTO.getAccountRequestDTO()));
-        ongRepository.save(dbOng.get());
-        ONGResponseDTO ongResponseDTO = ONGMapper.ONGToResponse(dbOng.get());
-
-        return ongResponseDTO;
+        return ONGMapper.ONGToResponse(ongRepository.save(dbOng.get()));
     }
 
     @Override
@@ -89,7 +83,7 @@ public class ONGService implements IONGService{
             ONG ong = ongRepository.getReferenceById(id);
             return ONGMapper.ONGToResponse(ong);
         }
-        catch(EntityNotFoundException e){
+        catch(Exception e){
             throw new ResourceNotFoundException("No ONG with that id.");
         }
     }

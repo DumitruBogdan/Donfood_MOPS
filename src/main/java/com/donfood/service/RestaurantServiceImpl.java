@@ -2,10 +2,10 @@ package com.donfood.service;
 
 import com.donfood.dao.RestaurantRepository;
 import com.donfood.domain.Restaurant;
-import com.donfood.dto.AccountRequestDTO;
 import com.donfood.dto.RestaurantRequestDTO;
 import com.donfood.dto.RestaurantResponseDTO;
 import com.donfood.exception.ResourceNotFoundException;
+import com.donfood.mapper.AccountMapper;
 import com.donfood.mapper.RestaurantMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,6 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,10 +62,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantResponseDTO updateRestaurant(RestaurantRequestDTO restaurantRequestDTO) {
 
         Optional<Restaurant> databaseRestaurant = restaurantRepository.findById(restaurantRequestDTO.getAccountId());
-        if (!databaseRestaurant.isPresent()) {
+        if (databaseRestaurant.isEmpty()) {
             throw new ResourceNotFoundException("The restaurant with id: " + restaurantRequestDTO.getAccountId() + " was not found");
         }
-        return RestaurantMapper.doToResponseDto(restaurantRepository.save(validateRestaurant(databaseRestaurant.get(), restaurantRequestDTO)));
+        Restaurant updatedRestaurant = validateRestaurant(databaseRestaurant.get(), restaurantRequestDTO);
+        Restaurant savedRestaurant = restaurantRepository.save(updatedRestaurant);
+        savedRestaurant.setAccountRest(updatedRestaurant.getAccountRest());
+        return RestaurantMapper.doToResponseDto(savedRestaurant);
     }
 
     @Override
@@ -85,6 +86,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         if (restaurantRequestDTO.getAccountId() != null) {
             restaurant.setAccountId(restaurantRequestDTO.getAccountId());
+            restaurant.setAccountRest(AccountMapper.requestToAccount(restaurantRequestDTO.getAccountRequestDTO()));
         }
         if (StringUtils.hasText(restaurantRequestDTO.getFiscalIdCode())) {
             restaurant.setFiscalIdCode(restaurantRequestDTO.getFiscalIdCode());
